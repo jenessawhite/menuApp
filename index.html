@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Menu App</title>
+</head>
+<body>
+  <div id="root"></div>
+  <div id="root2"></div>
+
+  <script src="node_modules/react/dist/react-with-addons.min.js"></script>
+  <script src="node_modules/react-dom/dist/react-dom.min.js"></script>
+  <script src="node_modules/babel-standalone/babel.min.js"></script>
+  <script src="src/index.js"></script>
+  <script type="text/babel">
+  //my third component
+  var Foods = React.createClass({
+  render: function() {
+    return (
+      <ul>
+        {this.props.items.map(function(item){
+          return ( <li>{item}</li> )
+        })}
+      </ul>
+    )
+  }
+});
+
+  //my second component
+  var MenuSection = React.createClass({
+    getInitialState() {
+    return { /* initial state */ };
+  },
+    render: function () {
+      return (
+        <div>
+          Hello from the {this.props.title}
+        <div>
+          <button>See our foods</button>
+        </div>
+          <Foods items={this.props.inventory} />
+        </div>
+      )
+    }
+  });
+  //my first component
+  var Menu = React.createClass({
+    // Set the initial state so that it is not 'null', which causes :(
+    getInitialState: function() {
+      return {
+        query: '',
+        isOpen: true
+      }
+    },
+    style: {
+      search: {
+        border: '1px solid #efefef',
+        padding: '1rem',
+        margin: '1rem'
+      }
+    },
+    onNewValue: function(e) { // Search input handler
+      this.setState({
+        query: e.target.value.toLowerCase()
+      })
+    },
+    onSearch: function() { // Button click handler
+      console.log('You searched for ', this.state.query);
+    },
+    onToggle: function() { // Button click handler
+      this.setState({
+        isOpen: !this.state.isOpen
+      });
+    },
+    isMatch: function(item) { // Search function
+      return item.toLowerCase().indexOf(this.state.query) > -1;
+    },
+    render: function () {
+      return (
+        <div>
+          <h1>Hey! Welcome to the {this.props.name} restaurant!</h1>
+          <div>
+            <input
+              role="search"
+              type="text"
+              placeholder="Find your favorite foods"
+              onChange={this.onNewValue} />
+            <button
+              onClick={this.onSearch}>Search</button>
+              <hr/>
+            <button
+              onClick={this.onToggle}>Toggle Me</button>
+            The kitchen is currently {this.state.isOpen ? 'open' : 'closed'}
+          </div>
+
+          <div>
+            <h3>Appetizers</h3>
+            <MenuSection title="Appetizers" inventory={
+              this.props.inventory.slice(0,5)
+            .filter(this.isMatch)
+              } />
+          </div>
+          <div>
+            <h3>Entrees</h3>
+            <MenuSection title="Entrees" inventory={
+              this.props.inventory.slice(5,9)
+            .filter(this.isMatch)
+              } />
+          </div>
+          <div>
+            <h3>Desserts</h3>
+            <MenuSection title="Desserts" inventory={
+              this.props.inventory.slice(9,14)
+            .filter(this.isMatch)
+              } />
+          </div>
+        </div>
+      )
+    }
+  });
+  //bootstrapping
+  ReactDOM.render(<Menu
+    name="Starboy"
+    inventory={[
+      "Buffalo Chicken Dip",
+      "Antipasto Kabobs",
+      "Sweet & Spicy Jalapeno Poppers",
+      "Tortilla Pinwheels",
+      "Savory Party Bread",
+      "Cheeseburger",
+      "Fried Chicken",
+      "Enchiladas",
+      "Steak and Sweet Potatoes",
+      "Apple Pie",
+      "Peah Cobbler",
+      "Flan",
+      "Red Velvet Cake",
+      "Snickerdoodle Cookies"
+    ]
+    }/>, document.getElementById('root'));
+  </script>
+</body>
+</html>

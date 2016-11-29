@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/jenessawhite/menuApp/issues"
   },
-  "homepage": "https://github.com/jenessawhite/menuApp#readme"
+  "homepage": "https://github.com/jenessawhite/menuApp#readme",
+  "dependencies": {
+    "babel-standalone": "^6.19.0",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1"
+  }
 }
